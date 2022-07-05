@@ -2,6 +2,7 @@ using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
+using Moq;
 using TDDNet6.API.Controllers;
 using TDDNet6.Models.User;
 using TDDNet6.Services.User;
@@ -12,6 +13,7 @@ namespace TDDNet6.Tests.Systems.Controllers;
 public class TestUsersController
 {
     private readonly IUserService _userService = Substitute.For<IUserService>();
+    //private readonly IUserService _userServiceMock = new Mock<IUserService>();
     private readonly IFixture _fixture = new Fixture();
 
     [Fact]
@@ -30,18 +32,22 @@ public class TestUsersController
     [Fact]
     public async Task Get_OnSuccess_InvokeUserService()
     {
-        //var user = _fixture.Build<User>().With(p => p.Id, () => id).CreateMany(10);
-        //var users = _fixture.Build<User>().With(f => f.Name, _fixture.Create("Name")).CreateMany(20);
+        // TODO: check how to return a new list with NSubstitute
+        //var res = _userService.GetAllUsers().Returns(Task.FromResult(1)));
         //default 3
         var users = _fixture.Create<List<UserModel>>();
         var testEntities = _fixture.Build<UserModel>().CreateMany(5).ToList();
 
-        //var sut = new UsersController(_userService.GetAllUsers());
+        var userServiceMock = new Mock<IUserService>();
+
+        userServiceMock.Setup(s => s.GetAllUsers()).ReturnsAsync(new List<UserModel>());
+
+        var sut = new UsersController(userServiceMock.Object);
 
         //Act
-        //var result = (OkObjectResult)await sut.Get();
+        var result = (OkObjectResult)await sut.Get();
 
         //Assert
-        testEntities.Should().NotBeEmpty();
+        userServiceMock.Verify(s => s.GetAllUsers(), Times.Once());
     }
 }
