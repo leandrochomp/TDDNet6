@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Models\TDDNet6.Models\TDDNet6.Models.csproj" />
     <ProjectReference Include="..\..\Libraries\Models\TDDNet6.Models.csproj" />
     <ProjectReference Include="..\..\Libraries\Services\TDDNet6.Services.csproj" />
     <ProjectReference Include="..\..\webApi\TDDNet6.API\TDDNet6.API.csproj" />
