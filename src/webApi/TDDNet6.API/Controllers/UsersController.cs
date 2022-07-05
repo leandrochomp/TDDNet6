@@ -1,22 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
-using TDDNet6.API.Models;
+using TDDNet6.Services.User;
 
-namespace TDDNet6.API.Controllers;
-
-[ApiController]
-[Route("[controller]")]
-public class UsersController : ControllerBase
+namespace TDDNet6.API.Controllers
 {
-    private readonly ILogger<UsersController> _logger;
-
-    public UsersController(ILogger<UsersController> logger)
+    [ApiController]
+    [Route("[controller]")]
+    public class UsersController : ControllerBase
     {
-        _logger = logger;
-    }
+        private readonly ILogger<UsersController> _logger;
+        private readonly IUserService _userService;
 
-    //[HttpGet(Name = "GetUsers")]
-    //public async Task <IActionResult> Get()
-    //{
-    //    return null;
-    //}
+        public UsersController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        public UsersController(ILogger<UsersController> logger)
+        {
+            _logger = logger;
+        }
+
+        [HttpGet(Name = "GetUsers")]
+        public async Task<IActionResult> Get()
+        {
+            return Ok("all good");
+        }
+    }
 }
