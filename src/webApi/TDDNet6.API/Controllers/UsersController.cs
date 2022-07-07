@@ -7,7 +7,7 @@ namespace TDDNet6.API.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
+        //private readonly ILogger<UsersController> _logger;
         private readonly IUserService _userService;
 
         public UsersController(IUserService userService)
@@ -15,15 +15,16 @@ namespace TDDNet6.API.Controllers
             _userService = userService;
         }
 
-        public UsersController(ILogger<UsersController> logger)
-        {
-            _logger = logger;
-        }
-
         [HttpGet(Name = "GetUsers")]
         public async Task<IActionResult> Get()
         {
-            return Ok("all good");
+            var users = await _userService.GetAllUsers();
+            if (users.Any())
+            {
+                return Ok(users);
+            }
+
+            return NotFound();
         }
     }
 }
